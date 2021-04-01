@@ -1,4 +1,5 @@
-﻿using Business.Interfaces;
+﻿using AutoMapper;
+using Business.Interfaces;
 using Entities.Concrete;
 using Entities.DTOs.ProductDto;
 using Jwt.WebApi.CustomFilters;
@@ -15,10 +16,12 @@ namespace Jwt.WebApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        IProductService _productService;
-        public ProductsController(IProductService productService)
+       private readonly IProductService _productService;
+        private readonly IMapper _mapper;
+        public ProductsController(IProductService productService, IMapper mapper)
         {
             _productService = productService;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -37,14 +40,14 @@ namespace Jwt.WebApi.Controllers
         [ValidModel]
         public async Task<IActionResult> Add(ProductAddDto productAddDto)
         {
-            await _productService.Add(new Products { Name = productAddDto.Name });
+            await _productService.Add(_mapper.Map<Products>(productAddDto));
             return Created("", productAddDto);
         }
         [HttpPut]
         [ServiceFilter(typeof(ValidId<Products>))]
-        public async Task<IActionResult> Update(Products product)
+        public async Task<IActionResult> Update(ProductUpdateDto productUpdateDto)
         {
-            await _productService.Update(product);
+            await _productService.Update(_mapper.Map<Products>(productUpdateDto));
             return NoContent();
         }
         [HttpDelete("{id}")]

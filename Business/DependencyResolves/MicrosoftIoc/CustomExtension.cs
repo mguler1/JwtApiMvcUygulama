@@ -29,6 +29,7 @@ namespace Business.DependencyResolves.MicrosoftIoc
             services.AddScoped<IAppUserRoleService, AppUserRoleManager>();
 
             services.AddTransient<IValidator<ProductAddDto>, ProductAddDtoValidator>();
+            services.AddTransient<IValidator<ProductUpdateDto>, ProductUpdateDtoValidator>();
         }
     }
 }
