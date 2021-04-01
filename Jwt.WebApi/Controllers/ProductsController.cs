@@ -27,6 +27,7 @@ namespace Jwt.WebApi.Controllers
             return Ok(products);
         }
         [HttpGet("{id}")]
+        [ServiceFilter(typeof(ValidId<Products>))]
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _productService.GetById(id);
@@ -40,12 +41,14 @@ namespace Jwt.WebApi.Controllers
             return Created("", productAddDto);
         }
         [HttpPut]
+        [ServiceFilter(typeof(ValidId<Products>))]
         public async Task<IActionResult> Update(Products product)
         {
             await _productService.Update(product);
             return NoContent();
         }
         [HttpDelete("{id}")]
+        [ServiceFilter(typeof(ValidId<Products>))]
         public async Task<IActionResult> Delete(int id)
         {
             await _productService.Remove(new Products { Id = id });

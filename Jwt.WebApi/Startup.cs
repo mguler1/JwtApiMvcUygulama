@@ -1,5 +1,6 @@
 using Business.DependencyResolves.MicrosoftIoc;
 using FluentValidation.AspNetCore;
+using Jwt.WebApi.CustomFilters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace Jwt.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDependenceis();
+            services.AddScoped(typeof(ValidId<>));
             services.AddControllers().AddFluentValidation();
         }
 
