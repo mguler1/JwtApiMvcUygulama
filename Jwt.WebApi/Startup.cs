@@ -1,17 +1,16 @@
 using Business.DependencyResolves.MicrosoftIoc;
+using Business.StringsInfos;
 using FluentValidation.AspNetCore;
 using Jwt.WebApi.CustomFilters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace Jwt.WebApi
 {
@@ -29,6 +28,19 @@ namespace Jwt.WebApi
         {
             services.AddDependenceis();
             services.AddScoped(typeof(ValidId<>));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt=> 
+            {
+                opt.RequireHttpsMetadata = false;
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidIssuer = JwtInfo.Issuer,
+                    ValidAudience = JwtInfo.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtInfo.SecurityKey)),
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
             services.AddControllers().AddFluentValidation();
         }
 
@@ -41,7 +53,7 @@ namespace Jwt.WebApi
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

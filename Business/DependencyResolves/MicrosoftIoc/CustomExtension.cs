@@ -3,6 +3,7 @@ using Business.Interfaces;
 using Business.ValidationRules.FluentValidation;
 using DataAccess.Concrete.EfCore.Repositories;
 using DataAccess.Interfaces;
+using Entities.DTOs.AppUserDto;
 using Entities.DTOs.ProductDto;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,9 @@ namespace Business.DependencyResolves.MicrosoftIoc
 
             services.AddTransient<IValidator<ProductAddDto>, ProductAddDtoValidator>();
             services.AddTransient<IValidator<ProductUpdateDto>, ProductUpdateDtoValidator>();
+
+            services.AddTransient<IValidator<AppUserLoginDto>, AppUserLoginDtoValidator>();
+            services.AddScoped<IJwtService, JwtManager>();
         }
     }
 }
