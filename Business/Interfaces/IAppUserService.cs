@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs.AppUserDto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Business.Interfaces
    public interface IAppUserService:IGenericService<AppUser>
     {
         Task<AppUser> FindByUserName(string userName);
-        Task<bool> Checkpassword(string userName, string password);
+        Task<bool> Checkpassword(AppUserLoginDto appUserLoginDto);
        
     }
 }

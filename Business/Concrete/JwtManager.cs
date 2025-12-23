@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -20,6 +21,12 @@ namespace Business.Concrete
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
           return   handler.WriteToken(jwtSecurityToken);
         }
+
+        public object GenerateJwt(Task<AppUser> appUser, object p)
+        {
+            throw new NotImplementedException();
+        }
+
         private List<Claim> GetClaims(AppUser appUser, List<AppRole> roles)
         {
             List<Claim> claims = new List<Claim>();
